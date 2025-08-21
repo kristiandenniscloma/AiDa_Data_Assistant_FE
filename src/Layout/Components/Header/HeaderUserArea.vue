@@ -66,7 +66,9 @@
 </template>
 
 <script>
+import { useAuthStore } from '@/stores/auth'
 import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'HeaderUserArea',
@@ -81,7 +83,10 @@ export default defineComponent({
       // Handle calendar functionality
     }
 
-    const handleMenuAction = action => {
+    const router = useRouter()
+    const auth = useAuthStore()
+
+    const handleMenuAction = async action => {
       // Handle user menu actions
 
       switch (action) {
@@ -93,6 +98,9 @@ export default defineComponent({
         break
       case 'logout':
         // Handle logout
+
+        await auth.logout()
+        router.push('/pages/login-boxed')
         break
       }
     }

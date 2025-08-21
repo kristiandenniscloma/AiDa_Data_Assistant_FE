@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
 
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(import.meta.env.PROD ? '/architectui-vue-free/' : '/'),
   scrollBehavior() {
     return { top: 0, behavior: 'smooth' }
@@ -163,3 +164,14 @@ export default createRouter({
     }
   ]
 })
+
+router.beforeEach(to => {
+  const auth = useAuthStore()
+  if (!auth.user) {
+    if (to.path !== '/pages/login-boxed' && to.path !== '/pages/register-boxed') {
+      return '/pages/login-boxed'
+    }
+  }
+})
+
+export default router

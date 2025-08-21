@@ -25,6 +25,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@googlemaps/js-api-loader": "^1.16.10",
     "@popperjs/core": "^2.11.8",
+    "@supabase/supabase-js": "^2.55.0",
     "@vue/compat": "^3.5.17",
     "animate-sass": "^0.8.2",
     "bootstrap": "^5.3.7",

@@ -15,7 +15,7 @@
             <i class="pe-7s-add-user text-white" style="font-size: 3rem"></i>
           </div>
         </div>
-        <h2 class="text-white text-center mb-3 fw-bold">Join ArchitectUI</h2>
+        <h2 class="text-white text-center mb-3 fw-bold">Make a converstion to your data now!</h2>
         <p class="text-white-50 text-center mb-0 fs-5">
           Create your account and start building amazing dashboards in minutes
         </p>
@@ -62,11 +62,15 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="email" class="form-label text-dark fw-medium mb-2">Email address</label>
-              <b-form-input id="email" type="email" size="lg" placeholder="Enter your email" class="py-3" required />
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="username" class="form-label text-dark fw-medium mb-2">Username</label>
-              <b-form-input id="username" type="text" size="lg" placeholder="Choose username" class="py-3" required />
+              <b-form-input
+                id="email"
+                v-model="email"
+                type="email"
+                size="lg"
+                placeholder="Enter your email"
+                class="py-3"
+                required
+              />
             </div>
           </div>
 
@@ -74,6 +78,7 @@
             <div class="col-md-6 mb-3">
               <label for="password" class="form-label text-dark fw-medium mb-2">Password</label>
               <b-form-input
+                v-model="password"
                 id="password"
                 type="password"
                 size="lg"
@@ -82,9 +87,13 @@
                 required
               />
             </div>
+          </div>
+
+          <div class="row">
             <div class="col-md-6 mb-3">
               <label for="confirm-password" class="form-label text-dark fw-medium mb-2">Confirm Password</label>
               <b-form-input
+                v-model="confirmPassword"
                 id="confirm-password"
                 type="password"
                 size="lg"
@@ -105,7 +114,22 @@
           </div>
 
           <div class="d-grid mb-4">
-            <b-button variant="success" size="lg" class="fw-medium py-3"> Create Account </b-button>
+            <b-button
+              variant="success"
+              size="lg"
+              class="fw-medium py-3"
+              @click="handleRegister"
+              :disabled="auth.loading"
+            >
+              Create Account
+            </b-button>
+          </div>
+
+          <div>
+            <p v-if="auth.error" style="color: red">{{ auth.error }}</p>
+            <p v-else-if="success">Account created!, Please check your email to confirm</p>
+
+            <p v-if="error" style="color: red">{{ error }}</p>
           </div>
 
           <div class="text-center">
@@ -128,7 +152,44 @@
 </template>
 
 <script>
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
+
 export default {
-  name: 'RegisterBoxed'
+  name: 'RegisterBoxed',
+
+  data() {
+    return {
+      email: '',
+      password: '',
+      confirmPassword: '',
+      success: false,
+      auth: useAuthStore(),
+      error: null,
+      router: useRouter()
+    }
+  },
+
+  methods: {
+    async handleRegister() {
+      this.error = null
+      console.log('handleRegister')
+      console.log('!this.email', this.email)
+      if (!this.email || !this.password || !this.confirmPassword) {
+        this.error = 'All fields are required'
+        return
+      }
+      if (this.password != this.confirmPassword) {
+        this.error = 'Passwords do not match'
+        return
+      }
+      const ok = await this.auth.register(this.email, this.password)
+
+      if (ok) {
+        this.success = true
+        this.router.push('/pages/login-boxed')
+      }
+    }
+  }
 }
 </script>

@@ -43,12 +43,21 @@
         <form>
           <div class="mb-4">
             <label for="email" class="form-label text-dark fw-medium mb-2">Email address</label>
-            <b-form-input id="email" type="email" size="lg" placeholder="Enter your email" class="py-3" required />
+            <b-form-input
+              v-model="email"
+              id="email"
+              type="email"
+              size="lg"
+              placeholder="Enter your email"
+              class="py-3"
+              required
+            />
           </div>
 
           <div class="mb-4">
             <label for="password" class="form-label text-dark fw-medium mb-2">Password</label>
             <b-form-input
+              v-model="password"
               id="password"
               type="password"
               size="lg"
@@ -66,14 +75,16 @@
           </div>
 
           <div class="d-grid mb-4">
-            <b-button variant="primary" size="lg" class="fw-medium py-3"> Sign in to Dashboard </b-button>
+            <b-button variant="primary" size="lg" class="fw-medium py-3" @click="handleLogin">
+              Sign in to Dashboard
+            </b-button>
           </div>
 
           <div class="text-center">
             <span class="text-secondary">Don't have an account? </span>
-            <b-link href="javascript:void(0);" class="text-primary text-decoration-none fw-medium">
+            <router-link to="/pages/register-boxed" class="text-primary text-decoration-none fw-medium">
               Sign up now
-            </b-link>
+            </router-link>
           </div>
         </form>
 
@@ -87,7 +98,29 @@
 </template>
 
 <script>
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
+
 export default {
-  name: 'LoginBoxed'
+  name: 'LoginBoxed',
+
+  data() {
+    return {
+      email: '',
+      password: '',
+      auth: useAuthStore(),
+      router: useRouter()
+    }
+  },
+
+  methods: {
+    async handleLogin() {
+      const ok = await this.auth.login(this.email, this.password)
+
+      if (ok) {
+        this.router.push('/dashboard')
+      }
+    }
+  }
 }
 </script>

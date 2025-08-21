@@ -2,6 +2,9 @@ import { createApp } from 'vue'
 import router from './router'
 import pinia from './stores'
 
+import { supabase } from './lib/supabase'
+import { useAuthStore } from './stores/auth'
+
 // Import the original base.scss which includes all theme styling
 import './assets/base.scss'
 
@@ -188,6 +191,14 @@ const app = createApp(App)
 
 app.use(router)
 app.use(pinia) // Vue 3 state management
+const authStore = useAuthStore()
+
+authStore.checkUser()
+
+supabase.auth.onAuthStateChange((_, session) => {
+  authStore.user = session?.user ?? null
+})
+
 app.use(createBootstrap()) // BootstrapVueNext with directives
 // Register BootstrapVueNext components with kebab-case names
 app.component('b-button', BButton)
