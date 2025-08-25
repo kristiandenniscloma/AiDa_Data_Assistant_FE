@@ -26,7 +26,7 @@ export const useAuthStore = defineStore('auth', {
       this.user = data.user
       return true
     },
-
+    //test
     async register(email, password) {
       this.loading = true
 
