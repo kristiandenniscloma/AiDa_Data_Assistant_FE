@@ -12,7 +12,7 @@
           </div>
         </div>
       </div>
-      <!-- <div class="page-title-actions">
+      <div class="page-title-actions">
         <b-button
           variant="dark"
           class="btn-shadow"
@@ -28,7 +28,7 @@
           <font-awesome-icon :icon="['fas', 'plus']" class="me-2" style="font-size: 1rem" />
           Create New
         </b-button>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>

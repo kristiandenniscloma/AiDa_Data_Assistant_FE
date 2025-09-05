@@ -7,19 +7,6 @@ const router = createRouter({
     return { top: 0, behavior: 'smooth' }
   },
   routes: [
-    // Dashboards
-
-    {
-      path: '/',
-      name: 'analytics',
-      component: () => import('../DemoPages/Dashboards/Analytics.vue')
-    },
-    {
-      path: '/dashboards/analytics-enhanced',
-      name: 'analytics-enhanced',
-      component: () => import('../DemoPages/Dashboards/AnalyticsEnhanced.vue')
-    },
-
     // Pages
 
     {
@@ -39,6 +26,24 @@ const router = createRouter({
       name: 'forgot-password-boxed',
       meta: { layout: 'userpages' },
       component: () => import('../DemoPages/UserPages/ForgotPasswordBoxed.vue')
+    },
+    {
+      path: '/pages/data/commerce/:project/products',
+      name: 'commerce-products',
+      component: () => import('../Pages/Data/Commerce/Products.vue')
+    },
+
+    // Dashboards
+
+    {
+      path: '/',
+      name: 'analytics',
+      component: () => import('../DemoPages/Dashboards/Analytics.vue')
+    },
+    {
+      path: '/dashboards/analytics-enhanced',
+      name: 'analytics-enhanced',
+      component: () => import('../DemoPages/Dashboards/AnalyticsEnhanced.vue')
     },
 
     // Elements

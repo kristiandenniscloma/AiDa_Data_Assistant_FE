@@ -106,8 +106,8 @@ export default {
 
   data() {
     return {
-      email: '',
-      password: '',
+      email: 'cloma.kristian@gmail.com',
+      password: 'cloma123',
       auth: useAuthStore(),
       router: useRouter()
     }

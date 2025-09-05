@@ -11,6 +11,62 @@ export const useSidebarStore = defineStore('sidebar', () => {
   // Menu structure
   const menuItems = ref([
     {
+      id: 'data',
+      type: 'header',
+      title: 'Data'
+    },
+    {
+      id: 'commerce',
+      type: 'submenu',
+      title: 'Flip Sole (commerce)',
+      icon: 'pe-7s-user',
+      children: [
+        {
+          id: 'view',
+          title: 'View',
+          route: '/pages/login-boxed'
+        },
+        {
+          id: 'products',
+          title: 'Products',
+          route: '/pages/data/commerce/flip-sole/products'
+        },
+        {
+          id: 'orders',
+          title: 'Orders',
+          route: '/pages/login-boxed'
+        },
+        {
+          id: 'customers',
+          title: 'Customers',
+          route: '/pages/login-boxed'
+        }
+      ]
+    },
+    {
+      id: 'real-estate',
+      type: 'submenu',
+      title: 'SMDC (real estate)',
+      icon: 'pe-7s-user',
+      children: [
+        {
+          id: 'rooms',
+          title: 'Rooms',
+          route: '/pages/login-boxed'
+        },
+        {
+          id: 'bookings',
+          title: 'Bookings',
+          route: '/pages/register-boxed'
+        },
+        {
+          id: 'customers',
+          title: 'Customers',
+          route: '/pages/forgot-password-boxed'
+        }
+      ]
+    },
+    {
       id: 'main',
       type: 'header',
       title: 'Main Navigation'
