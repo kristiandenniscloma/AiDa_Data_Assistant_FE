@@ -22,11 +22,6 @@ export const useSidebarStore = defineStore('sidebar', () => {
       icon: 'pe-7s-user',
       children: [
         {
-          id: 'view',
-          title: 'View',
-          route: '/pages/login-boxed'
-        },
-        {
           id: 'products',
           title: 'Products',
           route: '/pages/data/commerce/flip-sole/products'

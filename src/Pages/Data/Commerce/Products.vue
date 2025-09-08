@@ -15,18 +15,33 @@
           <!-- <p class="text-muted mb-4">Form fields with labels positioned to the left of inputs.</p> -->
 
           <form @submit.prevent="submitHorizontalForm">
+            <!--<b-row v-for="addProductFields in field" :key="field.key" class="mb-3">
+              <label for="horizontalEmail" class="col-sm-3 col-form-label">Name</label>
+              <b-col sm="9">
+                <b-form-input
+                  :id="--------------------"
+                  v-model="name"
+                  type="text"
+                  placeholder=""
+                  :state="getValidationState('name')"
+                  required
+                ></b-form-input>
+                <b-form-invalid-feedback> Please enter product name. </b-form-invalid-feedback>
+              </b-col>
+            </b-row>-->
+
             <b-row class="mb-3">
               <label for="horizontalEmail" class="col-sm-3 col-form-label">Name</label>
               <b-col sm="9">
                 <b-form-input
-                  id="horizontalEmail"
-                  v-model="horizontalForm.email"
-                  type="email"
-                  placeholder="Enter your email"
-                  :state="getHorizontalValidationState('email')"
+                  id="name"
+                  v-model="name"
+                  type="text"
+                  placeholder=""
+                  :state="getValidationState('name')"
                   required
                 ></b-form-input>
-                <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
+                <b-form-invalid-feedback> Please enter product name. </b-form-invalid-feedback>
               </b-col>
             </b-row>
 
@@ -37,7 +52,7 @@
                   id="horizontalEmail"
                   v-model="horizontalForm.email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder=""
                   :state="getHorizontalValidationState('email')"
                   required
                 ></b-form-input>
@@ -52,7 +67,7 @@
                   id="horizontalEmail"
                   v-model="horizontalForm.email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder=""
                   :state="getHorizontalValidationState('email')"
                   required
                 ></b-form-input>
@@ -67,7 +82,7 @@
                   id="horizontalEmail"
                   v-model="horizontalForm.email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder=""
                   :state="getHorizontalValidationState('email')"
                   required
                 ></b-form-input>
@@ -82,7 +97,7 @@
                   id="horizontalEmail"
                   v-model="horizontalForm.email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder=""
                   :state="getHorizontalValidationState('email')"
                   required
                 ></b-form-input>
@@ -96,7 +111,7 @@
                 <b-form-textarea
                   id="horizontalTextarea"
                   v-model="horizontalForm.bio"
-                  placeholder="Tell us about yourself..."
+                  placeholder=""
                   rows="4"
                 ></b-form-textarea>
               </b-col>
@@ -105,9 +120,9 @@
             <b-row>
               <b-col sm="9" offset-sm="3">
                 <div class="d-flex flex-wrap">
-                  <b-button type="submit" variant="primary" class="me-2 mb-2">
+                  <b-button type="submit" @click="AddSubmit()" variant="primary" class="me-2 mb-2">
                     <i class="fas fa-paper-plane me-2"></i>
-                    Submit Application
+                    Submit
                   </b-button>
                   <b-button type="button" variant="outline-secondary" @click="resetHorizontalForm" class="mb-2">
                     <i class="fas fa-undo me-2"></i>
@@ -119,12 +134,97 @@
           </form>
         </div>
       </div>
+
+      <b-card title="Products" class="main-card mb-4">
+        <div class="table-controls mb-3">
+          <b-row class="align-items-center">
+            <b-col md="6">
+              <div class="d-flex align-items-center">
+                <label class="form-label me-2 mb-0">Show:</label>
+                <b-form-select
+                  v-model="perPage"
+                  :options="[
+                    { value: 5, text: '5' },
+                    { value: 10, text: '10' },
+                    { value: 25, text: '25' },
+                    { value: 50, text: '50' }
+                  ]"
+                  size="sm"
+                  style="width: auto"
+                ></b-form-select>
+                <span class="ms-2 text-muted">entries</span>
+              </div>
+            </b-col>
+            <b-col md="6">
+              <div class="d-flex justify-content-end">
+                <b-form-input
+                  v-model="filter"
+                  type="text"
+                  size="sm"
+                  placeholder="Search..."
+                  style="width: 200px"
+                ></b-form-input>
+              </div>
+            </b-col>
+          </b-row>
+        </div>
+
+        <b-table
+          :items="paginatedItems"
+          :fields="tableFields"
+          :striped="striped"
+          :bordered="bordered"
+          :hover="hover"
+          :small="small"
+          :dark="dark"
+          :responsive="responsive"
+          :show-empty="showEmpty"
+          empty-text="No data available"
+          class="mb-0"
+        >
+          <!-- Custom slot for status column -->
+          <template #cell(status)="data">
+            <span :class="getStatusClass(data.value)" class="badge">
+              {{ data.value }}
+            </span>
+          </template>
+
+          <!-- Custom slot for actions column -->
+          <template #cell(actions)="data">
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-primary btn-sm" @click="editItem(data.item)">
+                <font-awesome-icon icon="edit" />
+              </button>
+              <button class="btn btn-outline-danger btn-sm" @click="deleteItem(data.item)">
+                <font-awesome-icon icon="trash" />
+              </button>
+            </div>
+          </template>
+        </b-table>
+
+        <!-- Pagination -->
+        <div v-if="totalRows > perPage" class="d-flex justify-content-between align-items-center mt-3">
+          <div class="text-muted">
+            Showing {{ (currentPage - 1) * perPage + 1 }} to {{ Math.min(currentPage * perPage, totalRows) }} of
+            {{ totalRows }} entries
+          </div>
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            size="sm"
+            class="mb-0"
+            aria-label="Table pagination"
+          ></b-pagination>
+        </div>
+      </b-card>
     </div>
   </div>
 </template>
 
 <script>
 import PageTitle from '../../../Layout/Components/PageTitle.vue'
+//import axios from 'axios'
 
 export default {
   name: 'FormLayouts',
@@ -163,6 +263,21 @@ export default {
         email: '',
         password: ''
       },
+
+      /*addProductFields: [
+        {
+          id: 'name',
+          mode: 'name',
+          type: 'text',
+          placeholder: 'Type product name here',
+          stateValidation: 'name',
+          class: 'product-name',
+          label: 'Name',
+          is_required: true,
+          invalid_feedback: 'Please enter product name.',
+          field_type: 'input'
+        }
+      ],*/
 
       // Horizontal Form Data
       horizontalForm: {
@@ -221,11 +336,172 @@ export default {
         { text: 'Mid Level (3-5 years)', value: 'mid' },
         { text: 'Senior Level (6+ years)', value: 'senior' },
         { text: 'Lead/Manager (8+ years)', value: 'lead' }
+      ],
+
+      // Table styling options
+      striped: true,
+      bordered: false,
+      hover: true,
+      small: false,
+      dark: false,
+      responsive: true,
+      showEmpty: true,
+      sortable: true,
+
+      // Pagination and filteringn
+      currentPage: 1,
+      perPage: 10,
+      filter: '',
+      sortBy: 'name',
+      sortDesc: false,
+
+      // Table fields
+      tableFields: [
+        { key: 'id', label: 'ID', sortable: true, class: 'text-center' },
+        { key: 'name', label: 'Full Name', sortable: true },
+        { key: 'email', label: 'Email', sortable: true },
+        { key: 'department', label: 'Department', sortable: true },
+        { key: 'role', label: 'Role', sortable: true },
+        { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
+        { key: 'joinDate', label: 'Join Date', sortable: true, class: 'text-center' },
+        { key: 'actions', label: 'Actions', class: 'text-center' }
+      ],
+
+      // Enhanced sample data
+      items: [
+        {
+          id: 1,
+          name: 'John Doe',
+          email: 'john.doe@company.com',
+          department: 'Engineering',
+          role: 'Senior Developer',
+          status: 'Active',
+          joinDate: '2022-01-15'
+        },
+        {
+          id: 2,
+          name: 'Jane Smith',
+          email: 'jane.smith@company.com',
+          department: 'Design',
+          role: 'UI/UX Designer',
+          status: 'Active',
+          joinDate: '2022-03-20'
+        },
+        {
+          id: 3,
+          name: 'Mike Johnson',
+          email: 'mike.johnson@company.com',
+          department: 'Marketing',
+          role: 'Marketing Manager',
+          status: 'Inactive',
+          joinDate: '2021-11-10'
+        },
+        {
+          id: 4,
+          name: 'Sarah Wilson',
+          email: 'sarah.wilson@company.com',
+          department: 'Engineering',
+          role: 'DevOps Engineer',
+          status: 'Active',
+          joinDate: '2023-02-01'
+        },
+        {
+          id: 5,
+          name: 'David Brown',
+          email: 'david.brown@company.com',
+          department: 'Sales',
+          role: 'Sales Representative',
+          status: 'Pending',
+          joinDate: '2023-05-15'
+        },
+        {
+          id: 6,
+          name: 'Emily Davis',
+          email: 'emily.davis@company.com',
+          department: 'HR',
+          role: 'HR Specialist',
+          status: 'Active',
+          joinDate: '2022-08-12'
+        },
+        {
+          id: 7,
+          name: 'Tom Anderson',
+          email: 'tom.anderson@company.com',
+          department: 'Engineering',
+          role: 'Frontend Developer',
+          status: 'Active',
+          joinDate: '2023-01-20'
+        },
+        {
+          id: 8,
+          name: 'Lisa Miller',
+          email: 'lisa.miller@company.com',
+          department: 'Design',
+          role: 'Product Designer',
+          status: 'Inactive',
+          joinDate: '2021-09-05'
+        }
       ]
     }
   },
 
+  computed: {
+    filteredItems() {
+      if (!this.filter || !Array.isArray(this.items)) {
+        return this.items || []
+      }
+      const filterLower = this.filter.toLowerCase()
+      return this.items.filter(item => {
+        if (!item || typeof item !== 'object') return false
+        return Object.values(item).some(value => {
+          if (value === null || value === undefined) return false
+          return String(value).toLowerCase().includes(filterLower)
+        })
+      })
+    },
+    paginatedItems() {
+      const filtered = this.filteredItems
+      if (!Array.isArray(filtered)) return []
+
+      const start = (this.currentPage - 1) * this.perPage
+      const end = start + this.perPage
+      return filtered.slice(start, end)
+    },
+    totalRows() {
+      return Array.isArray(this.filteredItems) ? this.filteredItems.length : 0
+    }
+  },
+
   methods: {
+    addSubmit() {
+      console.log('addSubmit')
+    },
+    getStatusClass(status) {
+      const statusClasses = {
+        Active: 'bg-success',
+        Inactive: 'bg-danger',
+        Pending: 'bg-warning text-dark'
+      }
+      return statusClasses[status] || 'bg-secondary'
+    },
+    editItem(item) {
+      // Handle edit action
+      alert(`Edit item: ${item.name}`)
+    },
+    deleteItem(item) {
+      // Handle delete action
+      if (confirm(`Are you sure you want to delete ${item.name}?`)) {
+        const index = this.items.findIndex(i => i.id === item.id)
+        if (index > -1) {
+          this.items.splice(index, 1)
+          // Reset to first page if current page is now empty
+          if (this.paginatedItems.length === 0 && this.currentPage > 1) {
+            this.currentPage = 1
+          }
+        }
+      }
+    },
+
     // Grid Form Methods
     submitGridForm() {
       if (this.validateGridForm()) {
@@ -245,16 +521,6 @@ export default {
         this.gridForm.zip &&
         this.gridForm.acceptTerms
       )
-    },
-
-    getValidationState(field) {
-      if (field === 'email') {
-        return this.gridForm.email ? (this.isValidEmail(this.gridForm.email) ? true : false) : null
-      }
-      if (field === 'password') {
-        return this.gridForm.password ? (this.gridForm.password.length >= 6 ? true : false) : null
-      }
-      return null
     },
 
     resetGridForm() {
@@ -302,7 +568,7 @@ export default {
       )
     },
 
-    getHorizontalValidationState(field) {
+    getValidationState(field) {
       if (field === 'email') {
         return this.horizontalForm.email ? (this.isValidEmail(this.horizontalForm.email) ? true : false) : null
       }
