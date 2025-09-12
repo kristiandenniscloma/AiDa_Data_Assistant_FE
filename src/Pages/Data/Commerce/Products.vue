@@ -35,7 +35,7 @@
               <b-col sm="9">
                 <b-form-input
                   id="name"
-                  v-model="name"
+                  v-model="productFields.name"
                   type="text"
                   placeholder=""
                   :state="getValidationState('name')"
@@ -50,10 +50,10 @@
               <b-col sm="9">
                 <b-form-input
                   id="horizontalEmail"
-                  v-model="horizontalForm.email"
-                  type="email"
+                  v-model="productFields.sku"
+                  type="text"
                   placeholder=""
-                  :state="getHorizontalValidationState('email')"
+                  :state="getValidationState('sku')"
                   required
                 ></b-form-input>
                 <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
@@ -65,10 +65,10 @@
               <b-col sm="9">
                 <b-form-input
                   id="horizontalEmail"
-                  v-model="horizontalForm.email"
-                  type="email"
+                  v-model="productFields.price"
+                  type="text"
                   placeholder=""
-                  :state="getHorizontalValidationState('email')"
+                  :state="getValidationState('price')"
                   required
                 ></b-form-input>
                 <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
@@ -80,51 +80,24 @@
               <b-col sm="9">
                 <b-form-input
                   id="horizontalEmail"
-                  v-model="horizontalForm.email"
-                  type="email"
+                  v-model="productFields.brand"
+                  type="text"
                   placeholder=""
-                  :state="getHorizontalValidationState('email')"
+                  :state="getValidationState('brand')"
                   required
                 ></b-form-input>
                 <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
-              </b-col>
-            </b-row>
-
-            <b-row class="mb-3">
-              <label for="horizontalEmail" class="col-sm-3 col-form-label">Categories</label>
-              <b-col sm="9">
-                <b-form-input
-                  id="horizontalEmail"
-                  v-model="horizontalForm.email"
-                  type="email"
-                  placeholder=""
-                  :state="getHorizontalValidationState('email')"
-                  required
-                ></b-form-input>
-                <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
-              </b-col>
-            </b-row>
-
-            <b-row class="mb-3">
-              <label for="horizontalTextarea" class="col-sm-3 col-form-label">Description</label>
-              <b-col sm="9">
-                <b-form-textarea
-                  id="horizontalTextarea"
-                  v-model="horizontalForm.bio"
-                  placeholder=""
-                  rows="4"
-                ></b-form-textarea>
               </b-col>
             </b-row>
 
             <b-row>
               <b-col sm="9" offset-sm="3">
                 <div class="d-flex flex-wrap">
-                  <b-button type="submit" @click="AddSubmit()" variant="primary" class="me-2 mb-2">
+                  <b-button type="submit" @click="AddSubmit" variant="primary" class="me-2 mb-2">
                     <i class="fas fa-paper-plane me-2"></i>
                     Submit
                   </b-button>
-                  <b-button type="button" variant="outline-secondary" @click="resetHorizontalForm" class="mb-2">
+                  <b-button type="button" variant="outline-secondary" class="mb-2">
                     <i class="fas fa-undo me-2"></i>
                     Reset
                   </b-button>
@@ -358,88 +331,100 @@ export default {
       // Table fields
       tableFields: [
         { key: 'id', label: 'ID', sortable: true, class: 'text-center' },
-        { key: 'name', label: 'Full Name', sortable: true },
-        { key: 'email', label: 'Email', sortable: true },
-        { key: 'department', label: 'Department', sortable: true },
-        { key: 'role', label: 'Role', sortable: true },
-        { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
-        { key: 'joinDate', label: 'Join Date', sortable: true, class: 'text-center' },
-        { key: 'actions', label: 'Actions', class: 'text-center' }
+        { key: 'name', label: 'Name', sortable: true },
+        { key: 'sku', label: 'SKU', sortable: true },
+        { key: 'price', label: 'Price', sortable: true },
+        { key: 'brand', label: 'Brand', sortable: true }
       ],
+
+      productFields: {
+        name: '',
+        sku: '',
+        price: '',
+        brand: ''
+      },
 
       // Enhanced sample data
       items: [
         {
           id: 1,
-          name: 'John Doe',
-          email: 'john.doe@company.com',
-          department: 'Engineering',
-          role: 'Senior Developer',
-          status: 'Active',
-          joinDate: '2022-01-15'
+          name: 'Nike VL Court',
+          sku: '394837383883',
+          price: '2000',
+          brand: 'Nike',
+          status: 'Active'
         },
         {
           id: 2,
-          name: 'Jane Smith',
-          email: 'jane.smith@company.com',
-          department: 'Design',
-          role: 'UI/UX Designer',
-          status: 'Active',
-          joinDate: '2022-03-20'
+          name: 'Adidas Runfalcon',
+          sku: '283746555221',
+          price: '2500',
+          brand: 'Adidas',
+          status: 'Active'
         },
         {
           id: 3,
-          name: 'Mike Johnson',
-          email: 'mike.johnson@company.com',
-          department: 'Marketing',
-          role: 'Marketing Manager',
-          status: 'Inactive',
-          joinDate: '2021-11-10'
+          name: 'Puma Smash V2',
+          sku: '112233445566',
+          price: '2200',
+          brand: 'Puma',
+          status: 'Active'
         },
         {
           id: 4,
-          name: 'Sarah Wilson',
-          email: 'sarah.wilson@company.com',
-          department: 'Engineering',
-          role: 'DevOps Engineer',
-          status: 'Active',
-          joinDate: '2023-02-01'
+          name: 'Converse Chuck Taylor',
+          sku: '998877665544',
+          price: '2700',
+          brand: 'Converse',
+          status: 'Active'
         },
         {
           id: 5,
-          name: 'David Brown',
-          email: 'david.brown@company.com',
-          department: 'Sales',
-          role: 'Sales Representative',
-          status: 'Pending',
-          joinDate: '2023-05-15'
+          name: 'Reebok Classic Leather',
+          sku: '556677889900',
+          price: '3100',
+          brand: 'Reebok',
+          status: 'Inactive'
         },
         {
           id: 6,
-          name: 'Emily Davis',
-          email: 'emily.davis@company.com',
-          department: 'HR',
-          role: 'HR Specialist',
-          status: 'Active',
-          joinDate: '2022-08-12'
+          name: 'Under Armour Charged',
+          sku: '123987456321',
+          price: '2900',
+          brand: 'Under Armour',
+          status: 'Active'
         },
         {
           id: 7,
-          name: 'Tom Anderson',
-          email: 'tom.anderson@company.com',
-          department: 'Engineering',
-          role: 'Frontend Developer',
-          status: 'Active',
-          joinDate: '2023-01-20'
+          name: 'New Balance 574',
+          sku: '444555666777',
+          price: '2800',
+          brand: 'New Balance',
+          status: 'Active'
         },
         {
           id: 8,
-          name: 'Lisa Miller',
-          email: 'lisa.miller@company.com',
-          department: 'Design',
-          role: 'Product Designer',
-          status: 'Inactive',
-          joinDate: '2021-09-05'
+          name: 'Asics Gel-Venture',
+          sku: '777888999000',
+          price: '2600',
+          brand: 'Asics',
+          status: 'Active'
+        },
+        {
+          id: 9,
+          name: 'Fila Disruptor II',
+          sku: '135791357913',
+          price: '2400',
+          brand: 'Fila',
+          status: 'Inactive'
+        },
+        {
+          id: 10,
+          name: 'Skechers Go Walk',
+          sku: '246824682468',
+          price: '2300',
+          brand: 'Skechers',
+          status: 'Active'
         }
       ]
     }
@@ -473,9 +458,6 @@ export default {
   },
 
   methods: {
-    addSubmit() {
-      console.log('addSubmit')
-    },
     getStatusClass(status) {
       const statusClasses = {
         Active: 'bg-success',
@@ -536,30 +518,11 @@ export default {
       }
     },
 
-    // Inline Form Methods
-    submitInlineForm() {
-      if (this.inlineForm.email && this.inlineForm.password) {
-        alert('Inline form submitted successfully!')
-        // Form data available in this.inlineForm
-      }
+    addSubmit() {
+      console.log('addSubmit')
     },
 
-    submitQuickForm() {
-      if (this.quickForm.email && this.quickForm.password) {
-        alert('Quick form submitted successfully!')
-        // Form data available in this.quickForm
-      }
-    },
-
-    // Horizontal Form Methods
-    submitHorizontalForm() {
-      if (this.validateHorizontalForm()) {
-        alert('Horizontal form submitted successfully!')
-        // Form data available in this.horizontalForm
-      }
-    },
-
-    validateHorizontalForm() {
+    validateForm() {
       return (
         this.horizontalForm.email &&
         this.horizontalForm.password.length >= 6 &&
@@ -569,26 +532,11 @@ export default {
     },
 
     getValidationState(field) {
-      if (field === 'email') {
-        return this.horizontalForm.email ? (this.isValidEmail(this.horizontalForm.email) ? true : false) : null
-      }
-      if (field === 'password') {
-        return this.horizontalForm.password ? (this.horizontalForm.password.length >= 6 ? true : false) : null
+      if (field === 'name') {
+        console.log('name', field)
+        return this.productFields.name ? (this.productFields.name.length > 0 ? true : false) : null
       }
       return null
-    },
-
-    resetHorizontalForm() {
-      this.horizontalForm = {
-        email: '',
-        password: '',
-        department: '',
-        skills: [],
-        bio: '',
-        file: null,
-        experience: '',
-        available: false
-      }
     },
 
     // Utility Methods
