@@ -27,6 +27,15 @@ export const useAuthStore = defineStore('auth', {
       return true
     },
     //test
+
+    async getUserSession() {
+      const res = await supabase.auth.getSession()
+
+      console.log('res', res)
+
+      return res.data.session?.access_token || null
+    },
+
     async register(email, password) {
       this.loading = true
 
@@ -46,6 +55,8 @@ export const useAuthStore = defineStore('auth', {
 
       return true
     },
+
+    async updateSettings(projectName, accessKey) {},
 
     async logout() {
       await supabase.auth.signOut()

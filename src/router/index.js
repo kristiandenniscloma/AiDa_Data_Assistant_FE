@@ -27,6 +27,12 @@ const router = createRouter({
       meta: { layout: 'userpages' },
       component: () => import('../DemoPages/UserPages/ForgotPasswordBoxed.vue')
     },
+    //Per project
+    {
+      path: '/pages/data/commerce/:project/settings',
+      name: 'commerce-settings',
+      component: () => import('../Pages/Data/Commerce/Settings.vue')
+    },
     {
       path: '/pages/data/commerce/:project/products',
       name: 'commerce-products',

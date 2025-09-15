@@ -8,7 +8,7 @@
         <div class="card-header">
           <div class="card-header-title font-size-lg text-capitalize fw-normal">
             <i class="header-icon pe-7s-albums icon-gradient bg-happy-fisher"></i>
-            Add Product
+            Settings
           </div>
         </div>
         <div class="card-body">
@@ -16,11 +16,11 @@
 
           <form @submit.prevent="submitHorizontalForm">
             <b-row class="mb-3">
-              <label for="horizontalEmail" class="col-sm-3 col-form-label">Name</label>
+              <label for="horizontalEmail" class="col-sm-3 col-form-label">Project Name</label>
               <b-col sm="9">
                 <b-form-input
                   id="name"
-                  v-model="productFields[0].name"
+                  v-model="settings.projectName"
                   type="text"
                   placeholder=""
                   :state="getValidationState('name')"
@@ -29,13 +29,12 @@
                 <b-form-invalid-feedback> Please enter product name. </b-form-invalid-feedback>
               </b-col>
             </b-row>
-
             <b-row class="mb-3">
-              <label for="horizontalEmail" class="col-sm-3 col-form-label">SKU</label>
+              <label for="horizontalEmail" class="col-sm-3 col-form-label">Access Key</label>
               <b-col sm="9">
                 <b-form-input
                   id="horizontalEmail"
-                  v-model="productFields[0].sku"
+                  v-model="settings.accessKey"
                   type="text"
                   placeholder=""
                   :state="getValidationState('sku')"
@@ -44,53 +43,22 @@
                 <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
               </b-col>
             </b-row>
-
             <b-row class="mb-3">
-              <label for="horizontalEmail" class="col-sm-3 col-form-label">Price</label>
+              <label for="horizontalSelect" class="col-sm-3 col-form-label">Status</label>
               <b-col sm="9">
-                <b-form-input
-                  id="horizontalEmail"
-                  v-model="productFields[0].price"
-                  type="text"
-                  placeholder=""
-                  :state="getValidationState('price')"
+                <b-form-select
+                  id="horizontalSelect"
+                  v-model="settings.status"
+                  :options="settingsStatusOptions"
                   required
-                ></b-form-input>
-                <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
-              </b-col>
-            </b-row>
-
-            <b-row class="mb-3">
-              <label for="horizontalEmail" class="col-sm-3 col-form-label">Brand</label>
-              <b-col sm="9">
-                <b-form-input
-                  id="horizontalEmail"
-                  v-model="productFields[0].brand"
-                  type="text"
-                  placeholder=""
-                  :state="getValidationState('brand')"
-                  required
-                ></b-form-input>
-                <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
-              </b-col>
-            </b-row>
-
-            <b-row class="mb-3">
-              <label for="horizontalTextarea" class="col-sm-3 col-form-label">Description</label>
-              <b-col sm="9">
-                <b-form-textarea
-                  id="horizontalTextarea"
-                  v-model="productFields[0].description"
-                  placeholder=""
-                  rows="4"
-                ></b-form-textarea>
+                ></b-form-select>
               </b-col>
             </b-row>
 
             <b-row>
               <b-col sm="9" offset-sm="3">
                 <div class="d-flex flex-wrap">
-                  <b-button type="submit" @click="addSubmit" variant="primary" class="me-2 mb-2">
+                  <b-button type="submit" @click="submit" variant="primary" class="me-2 mb-2">
                     <i class="fas fa-paper-plane me-2"></i>
                     Submit
                   </b-button>
@@ -104,90 +72,6 @@
           </form>
         </div>
       </div>
-
-      <b-card title="Products" class="main-card mb-4">
-        <div class="table-controls mb-3">
-          <b-row class="align-items-center">
-            <b-col md="6">
-              <div class="d-flex align-items-center">
-                <label class="form-label me-2 mb-0">Show:</label>
-                <b-form-select
-                  v-model="perPage"
-                  :options="[
-                    { value: 5, text: '5' },
-                    { value: 10, text: '10' },
-                    { value: 25, text: '25' },
-                    { value: 50, text: '50' }
-                  ]"
-                  size="sm"
-                  style="width: auto"
-                ></b-form-select>
-                <span class="ms-2 text-muted">entries</span>
-              </div>
-            </b-col>
-            <b-col md="6">
-              <div class="d-flex justify-content-end">
-                <b-form-input
-                  v-model="filter"
-                  type="text"
-                  size="sm"
-                  placeholder="Search..."
-                  style="width: 200px"
-                ></b-form-input>
-              </div>
-            </b-col>
-          </b-row>
-        </div>
-
-        <b-table
-          :items="paginatedItems"
-          :fields="tableFields"
-          :striped="striped"
-          :bordered="bordered"
-          :hover="hover"
-          :small="small"
-          :dark="dark"
-          :responsive="responsive"
-          :show-empty="showEmpty"
-          empty-text="No data available"
-          class="mb-0"
-        >
-          <!-- Custom slot for status column -->
-          <template #cell(status)="data">
-            <span :class="getStatusClass(data.value)" class="badge">
-              {{ data.value }}
-            </span>
-          </template>
-
-          <!-- Custom slot for actions column -->
-          <template #cell(actions)="data">
-            <div class="btn-group btn-group-sm">
-              <button class="btn btn-outline-primary btn-sm" @click="editItem(data.item)">
-                <font-awesome-icon icon="edit" />
-              </button>
-              <button class="btn btn-outline-danger btn-sm" @click="deleteItem(data.item)">
-                <font-awesome-icon icon="trash" />
-              </button>
-            </div>
-          </template>
-        </b-table>
-
-        <!-- Pagination -->
-        <div v-if="totalRows > perPage" class="d-flex justify-content-between align-items-center mt-3">
-          <div class="text-muted">
-            Showing {{ (currentPage - 1) * perPage + 1 }} to {{ Math.min(currentPage * perPage, totalRows) }} of
-            {{ totalRows }} entries
-          </div>
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="totalRows"
-            :per-page="perPage"
-            size="sm"
-            class="mb-0"
-            aria-label="Table pagination"
-          ></b-pagination>
-        </div>
-      </b-card>
     </div>
   </div>
 </template>
@@ -196,7 +80,6 @@
 import PageTitle from '../../../Layout/Components/PageTitle.vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { useAuthStore } from '@/stores/auth'
 
 export default {
   name: 'FormLayouts',
@@ -205,201 +88,34 @@ export default {
   },
   data() {
     return {
-      heading: 'Manage Products',
-      subheading: 'Upload products here for commerce type of data',
+      heading: 'Settings',
+      subheading: 'Manage your project settings here',
       icon: 'pe-7s-graph text-success',
 
       backendEndpoint: import.meta.env.VITE_BACKEND_URL,
-      auth: useAuthStore(),
 
-      // Table styling options
-      striped: true,
-      bordered: false,
-      hover: true,
-      small: false,
-      dark: false,
-      responsive: true,
-      showEmpty: true,
-      sortable: true,
-
-      // Pagination and filteringn
-      currentPage: 1,
-      perPage: 10,
-      filter: '',
-      sortBy: 'name',
-      sortDesc: false,
-
-      // Table fields
-      tableFields: [
-        { key: 'id', label: 'ID', sortable: true, class: 'text-center' },
-        { key: 'name', label: 'Name', sortable: true },
-        { key: 'sku', label: 'SKU', sortable: true },
-        { key: 'price', label: 'Price', sortable: true },
-        { key: 'brand', label: 'Brand', sortable: true }
+      settingsStatusOptions: [
+        { value: 'enabled', text: 'Enabled' },
+        { value: 'disabled', text: 'Disabled' }
       ],
-
-      /*
-      "sku": "100128",
-      "name": "Asics Gel-Kayano",
-      "price": 1400,
-      "brand": "asics",
-      "categories": ["shoe"],
-      "description": "Asics Gel-Kayano provides advanced support and shock absorption using Gel technology, ideal for long-distance running. It comes with color emerald and amethyst"
-
-      */
-
-      projectId: '6469186e-d761-4664-a799-d0455074271btest',
-      userSession: null,
-      productFields: [
-        {
-          name: 'Sledgers Loafer',
-          sku: '111111',
-          price: '3500',
-          brand: 'Sledgers',
-          categories: ['shoe'],
-          description:
-            'Step into effortless sophistication with the Sledgers Loafer Shoes, crafted for men who value both style and comfort. Designed with Sledgers’ signature lightweight technology, these loafers feature premium leather uppers, cushioned insoles, and flexible outsoles that keep you comfortable all day long.'
-        }
-      ],
-
-      // Enhanced sample data
-      /*items: [
-        {
-          id: 1,
-          name: 'Nike VL Court',
-          sku: '394837383883',
-          price: '2000',
-          brand: 'Nike',
-          status: 'Active'
-        },
-        {
-          id: 2,
-          name: 'Adidas Runfalcon',
-          sku: '283746555221',
-          price: '2500',
-          brand: 'Adidas',
-          status: 'Active'
-        },
-        {
-          id: 3,
-          name: 'Puma Smash V2',
-          sku: '112233445566',
-          price: '2200',
-          brand: 'Puma',
-          status: 'Active'
-        },
-        {
-          id: 4,
-          name: 'Converse Chuck Taylor',
-          sku: '998877665544',
-          price: '2700',
-          brand: 'Converse',
-          status: 'Active'
-        },
-        {
-          id: 5,
-          name: 'Reebok Classic Leather',
-          sku: '556677889900',
-          price: '3100',
-          brand: 'Reebok',
-          status: 'Inactive'
-        },
-        {
-          id: 6,
-          name: 'Under Armour Charged',
-          sku: '123987456321',
-          price: '2900',
-          brand: 'Under Armour',
-          status: 'Active'
-        },
-        {
-          id: 7,
-          name: 'New Balance 574',
-          sku: '444555666777',
-          price: '2800',
-          brand: 'New Balance',
-          status: 'Active'
-        },
-        {
-          id: 8,
-          name: 'Asics Gel-Venture',
-          sku: '777888999000',
-          price: '2600',
-          brand: 'Asics',
-          status: 'Active'
-        },
-        {
-          id: 9,
-          name: 'Fila Disruptor II',
-          sku: '135791357913',
-          price: '2400',
-          brand: 'Fila',
-          status: 'Inactive'
-        },
-        {
-          id: 10,
-          name: 'Skechers Go Walk',
-          sku: '246824682468',
-          price: '2300',
-          brand: 'Skechers',
-          status: 'Active'
-        }
-      ]*/
-      items: []
+      settings: {
+        projectName: '',
+        accessKey: '',
+        status: ''
+      },
+      projectId: '6469186e-d761-4664-a799-d0455074271b'
     }
   },
 
   async created() {
-    const userSession = await this.auth.getUserSession()
-
-    console.log('userSession: ', userSession)
-
-    this.userSession = userSession
-
     console.log('backendEndpoint: ', this.backendEndpoint)
-    this.fetchProducts()
   },
 
-  computed: {
-    filteredItems() {
-      if (!this.filter || !Array.isArray(this.items)) {
-        return this.items || []
-      }
-      const filterLower = this.filter.toLowerCase()
-      return this.items.filter(item => {
-        if (!item || typeof item !== 'object') return false
-        return Object.values(item).some(value => {
-          if (value === null || value === undefined) return false
-          return String(value).toLowerCase().includes(filterLower)
-        })
-      })
-    },
-    paginatedItems() {
-      const filtered = this.filteredItems
-      if (!Array.isArray(filtered)) return []
-
-      const start = (this.currentPage - 1) * this.perPage
-      const end = start + this.perPage
-      return filtered.slice(start, end)
-    },
-    totalRows() {
-      return Array.isArray(this.filteredItems) ? this.filteredItems.length : 0
-    }
-  },
+  computed: {},
 
   methods: {
-    async fetchProducts() {
-      try {
-        const res = await axios.get(this.backendEndpoint + '/commerce/products/list')
-
-        console.log('products list', res.data.products)
-
-        this.items = res.data.products
-
-        console.log('this.items: ', this.items)
-      } catch (e) {
-        console.log('error: ', e.message)
-      }
+    getValidationState() {
+      return true
     },
     messagePopUp(title, text, icon, timer = 3000) {
       Swal.fire({
@@ -410,122 +126,24 @@ export default {
         timer: timer // closes after 2 seconds
       })
     },
-
-    getStatusClass(status) {
-      const statusClasses = {
-        Active: 'bg-success',
-        Inactive: 'bg-danger',
-        Pending: 'bg-warning text-dark'
-      }
-      return statusClasses[status] || 'bg-secondary'
-    },
-    editItem(item) {
-      // Handle edit action
-      alert(`Edit item: ${item.name}`)
-    },
-    deleteItem(item) {
-      // Handle delete action
-      if (confirm(`Are you sure you want to delete ${item.name}?`)) {
-        const index = this.items.findIndex(i => i.id === item.id)
-        if (index > -1) {
-          this.items.splice(index, 1)
-          // Reset to first page if current page is now empty
-          if (this.paginatedItems.length === 0 && this.currentPage > 1) {
-            this.currentPage = 1
-          }
-        }
-      }
-    },
-
-    // Grid Form Methods
-    submitGridForm() {
-      if (this.validateGridForm()) {
-        alert('Grid form submitted successfully!')
-        // Handle form submission
-        // Form data available in this.gridForm
-      }
-    },
-
-    validateGridForm() {
-      return (
-        this.gridForm.email &&
-        this.gridForm.password.length >= 6 &&
-        this.gridForm.address &&
-        this.gridForm.city &&
-        this.gridForm.state &&
-        this.gridForm.zip &&
-        this.gridForm.acceptTerms
-      )
-    },
-
-    resetGridForm() {
-      this.gridForm = {
-        email: '',
-        password: '',
-        address: '',
-        address2: '',
-        city: '',
-        state: '',
-        zip: '',
-        acceptTerms: false
-      }
-    },
-
-    async addSubmit() {
+    async submit() {
       console.log('addSubmit')
 
       try {
-        const params = {
-          projectId: this.projectId,
-          items: this.productFields
-        }
-
-        console.log('this.userSession', this.userSession)
-
-        const res = await axios.post(this.backendEndpoint + '/commerce/products/vector/upsert', params, {
-          headers: {
-            Authorization: `Bearer ${this.userSession}`
-          }
+        console.log('settings: ', this.settings)
+        const res = await axios.post(this.backendEndpoint + '/commerce/settings', {
+          settings: this.settings,
+          projectId: this.projectId
         })
 
-        console.log('add submit')
+        console.log('res', res)
 
-        this.fetchProducts()
+        console.log('add submit')
 
         this.messagePopUp('Add/Update Product', 'New product added/update successfully.', 'success', 5000)
       } catch (err) {
         console.error('Error adding record:', err)
       }
-    },
-
-    validateForm() {
-      return (
-        this.horizontalForm.email &&
-        this.horizontalForm.password.length >= 6 &&
-        this.horizontalForm.department &&
-        this.horizontalForm.experience
-      )
-    },
-
-    getValidationState(field) {
-      return true
-
-      /*if (field === 'name') {
-        console.log('name', field)
-
-        this.productFields.forEachChild(product => {
-          if (product.name.length <= 0) return false
-        })
-
-        return this.productFields.name ? (this.productFields.name.length > 0 ? true : false) : null
-      }
-      return null*/
-    },
-
-    // Utility Methods
-    isValidEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      return re.test(email)
     }
   }
 }

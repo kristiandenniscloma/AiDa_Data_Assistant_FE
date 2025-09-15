@@ -12,7 +12,7 @@
       >
         <div class="mb-4">
           <div class="bg-white bg-opacity-10 rounded-4 p-4">
-            <i class="pe-7s-home text-white" style="font-size: 3rem"></i>
+            <i class="pe-7s-home text -white" style="font-size: 3rem"></i>
           </div>
         </div>
         <h2 class="text-white text-center mb-3 fw-bold">Welcome to ArchitectUI</h2>
