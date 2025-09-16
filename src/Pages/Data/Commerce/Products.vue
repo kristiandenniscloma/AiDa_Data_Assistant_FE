@@ -399,7 +399,7 @@ export default {
 
         console.log('this.userSession', this.userSession)
 
-        const res = await axios.post(this.backendEndpoint + '/commerce/products/vector/upsert', params, {
+        const res = await axios.post(this.backendEndpoint + '/site/commerce/products/vector/upsert', params, {
           headers: {
             Authorization: `Bearer ${this.userSession}`
           }
