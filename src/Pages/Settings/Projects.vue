@@ -8,7 +8,7 @@
         <div class="card-header">
           <div class="card-header-title font-size-lg text-capitalize fw-normal">
             <i class="header-icon pe-7s-albums icon-gradient bg-happy-fisher"></i>
-            Add Product
+            Add Project
           </div>
         </div>
         <div class="card-body">
@@ -20,7 +20,7 @@
               <b-col sm="9">
                 <b-form-input
                   id="name"
-                  v-model="productFields[0].name"
+                  v-model="settings.name"
                   type="text"
                   placeholder=""
                   :state="getValidationState('name')"
@@ -29,61 +29,21 @@
                 <b-form-invalid-feedback> Please enter product name. </b-form-invalid-feedback>
               </b-col>
             </b-row>
-
             <b-row class="mb-3">
-              <label for="horizontalEmail" class="col-sm-3 col-form-label">SKU</label>
+              <label for="horizontalEmail" class="col-sm-3 col-form-label">Access Key</label>
               <b-col sm="9">
-                <b-form-input
-                  id="horizontalEmail"
-                  v-model="productFields[0].sku"
-                  type="text"
-                  placeholder=""
-                  :state="getValidationState('sku')"
-                  required
-                ></b-form-input>
-                <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
+                <h6>{{ settings.accessKey }}</h6>
               </b-col>
             </b-row>
-
             <b-row class="mb-3">
-              <label for="horizontalEmail" class="col-sm-3 col-form-label">Price</label>
+              <label for="horizontalSelect" class="col-sm-3 col-form-label">Status</label>
               <b-col sm="9">
-                <b-form-input
-                  id="horizontalEmail"
-                  v-model="productFields[0].price"
-                  type="text"
-                  placeholder=""
-                  :state="getValidationState('price')"
+                <b-form-select
+                  id="horizontalSelect"
+                  v-model="settings.status"
+                  :options="settingsStatusOptions"
                   required
-                ></b-form-input>
-                <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
-              </b-col>
-            </b-row>
-
-            <b-row class="mb-3">
-              <label for="horizontalEmail" class="col-sm-3 col-form-label">Brand</label>
-              <b-col sm="9">
-                <b-form-input
-                  id="horizontalEmail"
-                  v-model="productFields[0].brand"
-                  type="text"
-                  placeholder=""
-                  :state="getValidationState('brand')"
-                  required
-                ></b-form-input>
-                <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
-              </b-col>
-            </b-row>
-
-            <b-row class="mb-3">
-              <label for="horizontalTextarea" class="col-sm-3 col-form-label">Description</label>
-              <b-col sm="9">
-                <b-form-textarea
-                  id="horizontalTextarea"
-                  v-model="productFields[0].description"
-                  placeholder=""
-                  rows="4"
-                ></b-form-textarea>
+                ></b-form-select>
               </b-col>
             </b-row>
 
@@ -105,7 +65,7 @@
         </div>
       </div>
 
-      <b-card title="Products" class="main-card mb-4">
+      <b-card title="Projects" class="main-card mb-4">
         <div class="table-controls mb-3">
           <b-row class="align-items-center">
             <b-col md="6">
@@ -152,13 +112,6 @@
           empty-text="No data available"
           class="mb-0"
         >
-          <!-- Custom slot for status column -->
-          <template #cell(status)="data">
-            <span :class="getStatusClass(data.value)" class="badge">
-              {{ data.value }}
-            </span>
-          </template>
-
           <!-- Custom slot for actions column -->
           <template #cell(actions)="data">
             <div class="btn-group btn-group-sm">
@@ -193,7 +146,7 @@
 </template>
 
 <script>
-import PageTitle from '../../../Layout/Components/PageTitle.vue'
+import PageTitle from '../../Layout/Components/PageTitle.vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useAuthStore } from '@/stores/auth'
@@ -203,10 +156,11 @@ export default {
   components: {
     PageTitle
   },
+
   data() {
     return {
-      heading: 'Manage Products',
-      subheading: 'Upload products here for commerce type of data',
+      heading: 'Manage Projects',
+      subheading: '',
       icon: 'pe-7s-graph text-success',
 
       backendEndpoint: import.meta.env.VITE_BACKEND_URL,
@@ -233,48 +187,30 @@ export default {
       tableFields: [
         { key: 'id', label: 'ID', sortable: true, class: 'text-center' },
         { key: 'name', label: 'Name', sortable: true },
-        { key: 'sku', label: 'SKU', sortable: true },
-        { key: 'price', label: 'Price', sortable: true },
-        { key: 'brand', label: 'Brand', sortable: true }
+        { key: 'status', label: 'Status', sortable: true },
+        { key: 'actions', label: 'Actions', class: 'text-center' }
       ],
 
-      /*
-      "sku": "100128",
-      "name": "Asics Gel-Kayano",
-      "price": 1400,
-      "brand": "asics",
-      "categories": ["shoe"],
-      "description": "Asics Gel-Kayano provides advanced support and shock absorption using Gel technology, ideal for long-distance running. It comes with color emerald and amethyst"
-
-      */
-
-      projectId: '6469186e-d761-4664-a799-d0455074271btest',
-      userSession: null,
-      productFields: [
-        {
-          name: 'Sledgers Loafer',
-          sku: '111111',
-          price: '3500',
-          brand: 'Sledgers',
-          categories: ['shoe'],
-          description:
-            'Step into effortless sophistication with the Sledgers Loafer Shoes, crafted for men who value both style and comfort. Designed with Sledgers’ signature lightweight technology, these loafers feature premium leather uppers, cushioned insoles, and flexible outsoles that keep you comfortable all day long.'
-        }
+      settingsStatusOptions: [
+        { value: 'enabled', text: 'Enabled' },
+        { value: 'disabled', text: 'Disabled' }
       ],
+      settings: {
+        id: '',
+        name: '',
+        accessKey: '',
+        status: ''
+      },
 
+      userSession: '',
       items: []
     }
   },
 
   async created() {
-    const userSession = await this.auth.getUserSession()
+    this.userSession = await this.auth.getUserSession()
 
-    console.log('userSession: ', userSession)
-
-    this.userSession = userSession
-
-    console.log('backendEndpoint: ', this.backendEndpoint)
-    this.fetchProducts()
+    this.fetchProjects()
   },
 
   computed: {
@@ -305,13 +241,13 @@ export default {
   },
 
   methods: {
-    async fetchProducts() {
+    async fetchProjects() {
       try {
-        const res = await axios.get(this.backendEndpoint + '/commerce/products/list')
+        const res = await axios.get(this.backendEndpoint + '/settings/projects/list')
 
-        console.log('products list', res.data.products)
+        console.log('prject list', res.data.projects)
 
-        this.items = res.data.products
+        this.items = res.data.projects
 
         console.log('this.items: ', this.items)
       } catch (e) {
@@ -337,8 +273,10 @@ export default {
       return statusClasses[status] || 'bg-secondary'
     },
     editItem(item) {
-      // Handle edit action
-      alert(`Edit item: ${item.name}`)
+      this.settings.id = item.id
+      this.settings.name = item.name
+      this.settings.status = item.status
+      this.settings.accessKey = item.access_key
     },
     deleteItem(item) {
       // Handle delete action
@@ -354,52 +292,19 @@ export default {
       }
     },
 
-    // Grid Form Methods
-    submitGridForm() {
-      if (this.validateGridForm()) {
-        alert('Grid form submitted successfully!')
-        // Handle form submission
-        // Form data available in this.gridForm
-      }
-    },
-
-    validateGridForm() {
-      return (
-        this.gridForm.email &&
-        this.gridForm.password.length >= 6 &&
-        this.gridForm.address &&
-        this.gridForm.city &&
-        this.gridForm.state &&
-        this.gridForm.zip &&
-        this.gridForm.acceptTerms
-      )
-    },
-
-    resetGridForm() {
-      this.gridForm = {
-        email: '',
-        password: '',
-        address: '',
-        address2: '',
-        city: '',
-        state: '',
-        zip: '',
-        acceptTerms: false
-      }
-    },
-
     async addSubmit() {
-      console.log('addSubmit')
+      console.log('addSubmit2')
 
       try {
         const params = {
-          projectId: this.projectId,
-          items: this.productFields
+          id: this.settings.id,
+          name: this.settings.name,
+          status: this.settings.status
         }
 
-        console.log('this.userSession', this.userSession)
+        console.log('this.params', params)
 
-        const res = await axios.post(this.backendEndpoint + '/commerce/products/vector/upsert', params, {
+        const res = await axios.post(this.backendEndpoint + '/settings/project/upsert', params, {
           headers: {
             Authorization: `Bearer ${this.userSession}`
           }
@@ -407,9 +312,9 @@ export default {
 
         console.log('add submit')
 
-        this.fetchProducts()
+        this.fetchProjects()
 
-        this.messagePopUp('Add/Update Product', 'New product added/update successfully.', 'success', 5000)
+        this.messagePopUp('Add/Update Project', 'New project added/update successfully.', 'success', 5000)
       } catch (err) {
         console.error('Error adding record:', err)
       }
