@@ -22,6 +22,11 @@ export const useSidebarStore = defineStore('sidebar', () => {
       icon: 'pe-7s-user',
       children: [
         {
+          id: 'data-commerce-ai-assistant',
+          title: 'AI Assistant',
+          route: '/pages/data/commerce/flip-sole/ai-assistant'
+        },
+        {
           id: 'products',
           title: 'Products',
           route: '/pages/data/commerce/flip-sole/products'
@@ -35,11 +40,6 @@ export const useSidebarStore = defineStore('sidebar', () => {
           id: 'customers',
           title: 'Customers',
           route: '/pages/login-boxed'
-        },
-        {
-          id: 'ai-assistant',
-          title: 'AI Assistant',
-          route: '/pages/data/commerce/flip-sole/ai-assistant'
         }
       ]
     },

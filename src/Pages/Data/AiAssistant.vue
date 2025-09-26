@@ -13,7 +13,44 @@
         </div>
         <div class="card-body">
           <!-- <p class="text-muted mb-4">Form fields with labels positioned to the left of inputs.</p> -->
-
+          <div>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="main-card mb-3 card">
+                  <div class="chat-boxes">
+                    <!--<li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Alina Mcloughlin</div>
+                            <div class="widget-subheading">A short profile description</div>
+                          </div>
+                          <div class="widget-content-right">
+                            <div role="group" class="btn-group-sm btn-group">
+                              <button type="button" class="btn-shadow btn btn-primary">Hire</button>
+                              <button type="button" class="btn-shadow btn btn-primary">Fire</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>-->
+                    <div class="chat-box chat-box-left">
+                      <div class="chat-box-inner">
+                        <div class="chat-box-user">AI</div>
+                        <div class="chat-box-message">Hi I, How can I help you</div>
+                      </div>
+                    </div>
+                    <div class="chat-box chat-box-right">
+                      <div class="chat-box-inner">
+                        <div class="chat-box-user">You</div>
+                        <div class="chat-box-message">Hi I, How can I help you</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <form @submit.prevent="submitHorizontalForm">
             <b-row class="mb-3">
               <b-col sm="9">

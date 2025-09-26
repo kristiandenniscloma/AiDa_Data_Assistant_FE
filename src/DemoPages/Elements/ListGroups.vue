@@ -158,6 +158,23 @@
                   </div>
                 </div>
               </li>
+              <li class="list-group-item">
+                <div class="widget-content p-0">
+                  <div class="widget-content-wrapper">
+                    <div class="widget-content-left center-elem me-2">
+                      <i class="pe-7s-file text-muted fsize-2"></i>
+                    </div>
+                    <div class="widget-content-right">
+                      <div class="widget-heading">Example file 1</div>
+                    </div>
+                    <div class="widget-content-right">
+                      <button class="btn-icon btn-icon-only btn btn-link">
+                        <i class="pe-7s-download fsize-2 btn-icon-wrapper"> </i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </li>
             </ul>
           </div>
           <div class="main-card mb-3 card">
@@ -607,7 +624,9 @@
             <div class="card-body">
               <h5 class="card-title">List group disabled items</h5>
               <ul class="list-group">
-                <a href="javascript:void(0);" class="list-group-item list-group-item-action disabled">Cras justo odio</a>
+                <a href="javascript:void(0);" class="list-group-item list-group-item-action disabled"
+                  >Cras justo odio</a
+                >
                 <a href="javascript:void(0);" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
                 <a href="javascript:void(0);" class="list-group-item list-group-item-action">Morbi leo risus</a>
                 <a href="javascript:void(0);" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
@@ -621,7 +640,9 @@
             <div class="card-body">
               <h5 class="card-title">List group without border</h5>
               <ul class="list-group list-group-flush">
-                <a href="javascript:void(0);" class="list-group-item list-group-item-action disabled">Cras justo odio</a>
+                <a href="javascript:void(0);" class="list-group-item list-group-item-action disabled"
+                  >Cras justo odio</a
+                >
                 <a href="javascript:void(0);" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
                 <a href="javascript:void(0);" class="list-group-item list-group-item-action">Morbi leo risus</a>
                 <a href="javascript:void(0);" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
