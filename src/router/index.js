@@ -32,6 +32,11 @@ const router = createRouter({
       name: 'commerce-products',
       component: () => import('../Pages/Data/Commerce/Products.vue')
     },
+    {
+      path: '/pages/data/commerce/:project/ai-assistant',
+      name: 'commerce-data-ai-assistante',
+      component: () => import('../Pages/Data/AiAssistant.vue')
+    },
     //Per project
     {
       path: '/pages/settings/projects',

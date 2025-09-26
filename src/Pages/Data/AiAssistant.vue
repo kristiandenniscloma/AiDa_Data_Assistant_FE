@@ -8,7 +8,7 @@
         <div class="card-header">
           <div class="card-header-title font-size-lg text-capitalize fw-normal">
             <i class="header-icon pe-7s-albums icon-gradient bg-happy-fisher"></i>
-            Add Product
+            Chat
           </div>
         </div>
         <div class="card-body">
@@ -16,67 +16,6 @@
 
           <form @submit.prevent="submitHorizontalForm">
             <b-row class="mb-3">
-              <label for="horizontalEmail" class="col-sm-3 col-form-label">Name</label>
-              <b-col sm="9">
-                <b-form-input
-                  id="name"
-                  v-model="productFields[0].name"
-                  type="text"
-                  placeholder=""
-                  :state="getValidationState('name')"
-                  required
-                ></b-form-input>
-                <b-form-invalid-feedback> Please enter product name. </b-form-invalid-feedback>
-              </b-col>
-            </b-row>
-
-            <b-row class="mb-3">
-              <label for="horizontalEmail" class="col-sm-3 col-form-label">SKU</label>
-              <b-col sm="9">
-                <b-form-input
-                  id="horizontalEmail"
-                  v-model="productFields[0].sku"
-                  type="text"
-                  placeholder=""
-                  :state="getValidationState('sku')"
-                  required
-                ></b-form-input>
-                <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
-              </b-col>
-            </b-row>
-
-            <b-row class="mb-3">
-              <label for="horizontalEmail" class="col-sm-3 col-form-label">Price</label>
-              <b-col sm="9">
-                <b-form-input
-                  id="horizontalEmail"
-                  v-model="productFields[0].price"
-                  type="text"
-                  placeholder=""
-                  :state="getValidationState('price')"
-                  required
-                ></b-form-input>
-                <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
-              </b-col>
-            </b-row>
-
-            <b-row class="mb-3">
-              <label for="horizontalEmail" class="col-sm-3 col-form-label">Brand</label>
-              <b-col sm="9">
-                <b-form-input
-                  id="horizontalEmail"
-                  v-model="productFields[0].brand"
-                  type="text"
-                  placeholder=""
-                  :state="getValidationState('brand')"
-                  required
-                ></b-form-input>
-                <b-form-invalid-feedback> Please enter a valid email address. </b-form-invalid-feedback>
-              </b-col>
-            </b-row>
-
-            <b-row class="mb-3">
-              <label for="horizontalTextarea" class="col-sm-3 col-form-label">Description</label>
               <b-col sm="9">
                 <b-form-textarea
                   id="horizontalTextarea"
@@ -193,7 +132,7 @@
 </template>
 
 <script>
-import PageTitle from '../../../Layout/Components/PageTitle.vue'
+import PageTitle from '../../Layout/Components/PageTitle.vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useAuthStore } from '@/stores/auth'
@@ -205,7 +144,7 @@ export default {
   },
   data() {
     return {
-      heading: 'Manage Products',
+      heading: 'Flip Sole - AI Assistant',
       subheading: 'Upload products here for commerce type of data',
       icon: 'pe-7s-graph text-success',
 
