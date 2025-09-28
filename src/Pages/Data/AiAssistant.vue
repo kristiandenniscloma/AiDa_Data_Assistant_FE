@@ -17,56 +17,49 @@
             <div class="row">
               <div class="col-lg-12">
                 <div class="main-card mb-3 card">
-                  <div class="chat-boxes">
-                    <!--<li class="list-group-item">
-                      <div class="widget-content p-0">
-                        <div class="widget-content-wrapper">
-                          <div class="widget-content-left">
-                            <div class="widget-heading">Alina Mcloughlin</div>
-                            <div class="widget-subheading">A short profile description</div>
-                          </div>
-                          <div class="widget-content-right">
-                            <div role="group" class="btn-group-sm btn-group">
-                              <button type="button" class="btn-shadow btn btn-primary">Hire</button>
-                              <button type="button" class="btn-shadow btn btn-primary">Fire</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>-->
-                    <div class="chat-box chat-box-left">
+                  <div class="chat-boxes" ref="chatContainer">
+                    <div
+                      v-for="message in chatMessages"
+                      :key="message.id"
+                      :class="message.sender === 'AI' ? 'chat-box-left' : 'chat-box-right'"
+                      class="chat-box"
+                    >
                       <div class="chat-box-inner">
-                        <div class="chat-box-user">AI</div>
-                        <div class="chat-box-message">Hi I, How can I help you</div>
+                        <div class="chat-box-user">{{ message.sender }}</div>
+                        <div class="chat-box-message">{{ message.text }}</div>
                       </div>
+                    </div>
+                    <div v-if="waitForReply" class="waiting-for-reply">Thinking....</div>
+
+                    <!--
+                    <div class="chat-box chat-box-left">
+
                     </div>
                     <div class="chat-box chat-box-right">
                       <div class="chat-box-inner">
                         <div class="chat-box-user">You</div>
                         <div class="chat-box-message">Hi I, How can I help you</div>
                       </div>
-                    </div>
+                    </div>-->
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <form @submit.prevent="submitHorizontalForm">
+          <form @submit.prevent="submitChatMessage">
             <b-row class="mb-3">
-              <b-col sm="9">
-                <b-form-textarea
+              <b-col sm="8">
+                <b-form-input
+                  class="text-input"
                   id="horizontalTextarea"
-                  v-model="productFields[0].description"
+                  v-model="chatInput"
                   placeholder=""
                   rows="4"
-                ></b-form-textarea>
+                ></b-form-input>
               </b-col>
-            </b-row>
-
-            <b-row>
-              <b-col sm="9" offset-sm="3">
+              <b-col sm="4">
                 <div class="d-flex flex-wrap">
-                  <b-button type="submit" @click="addSubmit" variant="primary" class="me-2 mb-2">
+                  <b-button type="submit" @click="sendMessage" variant="primary" class="me-2 mb-2">
                     <i class="fas fa-paper-plane me-2"></i>
                     Submit
                   </b-button>
@@ -238,7 +231,17 @@ export default {
         }
       ],
 
-      items: []
+      items: [],
+      chatInput: '',
+
+      chatMessages: [
+        {
+          id: 1,
+          sender: 'AI',
+          text: 'Hi, How can i help you ?'
+        }
+      ],
+      waitForReply: false
     }
   },
 
@@ -281,6 +284,16 @@ export default {
   },
 
   methods: {
+    scrollToBottom() {
+      console.log('scrollToBottom')
+      const container = document.querySelector('.chat-boxes')
+      if (container) {
+        container.scrollTop = container.scrollHeight + 200
+      }
+    },
+    getRandomInt(min = 1, max = 1) {
+      return Math.floor(Math.random() * (max - min + 1)) + min
+    },
     async fetchProducts() {
       try {
         const res = await axios.get(this.backendEndpoint + '/commerce/products/list')
@@ -330,6 +343,47 @@ export default {
       }
     },
 
+    submitChatMessage() {
+      console.log('submitChatMessage')
+    },
+
+    async sendMessage() {
+      console.log('sendMessage')
+
+      try {
+        this.waitForReply = true
+        const params = { question: this.chatInput }
+        console.log('params', params)
+
+        this.chatMessages.push({
+          id: this.getRandomInt(),
+          sender: 'YOU',
+          text: this.chatInput
+        })
+
+        setTimeout(() => {
+          this.scrollToBottom()
+        }, 500)
+
+        const res = await axios.post(this.backendEndpoint + '/commerce/products/vector/query', params)
+
+        const matchedProducts = res.data.matchedProducts
+        const answer = res.data.answer
+
+        this.chatMessages.push({
+          id: this.getRandomInt(),
+          sender: 'AI',
+          text: answer
+        })
+
+        this.waitForReply = false
+        this.chatInput = ''
+
+        console.log('res', res)
+      } catch (e) {
+        console.log('error: ', e.message)
+      }
+    },
     // Grid Form Methods
     submitGridForm() {
       if (this.validateGridForm()) {

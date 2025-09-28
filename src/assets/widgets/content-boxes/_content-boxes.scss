@@ -413,24 +413,45 @@ $widget-spacer: $spacer;
 
 //Chat box
 
-.chat-boxes {
-  padding: 20px;
-}
-
 .chat-box {
   padding: 12px 20px;
   width: 30%;
   border: none;
   border-radius: 30px 30px 0px 30px;
   background-color: #eee;
+  clear: both;
+  margin-bottom: 20px;
 }
 
 .chat-box.chat-box-right {
   text-align: right;
-  border-radius: 0px 30px 30px 30px;
+  border-radius: 30px 30px 30px 0px;
   float: right;
 }
 
 .chat-box-user {
   font-weight: bold;
+}
+
+.text-input {
+  border-radius: 10px;
+  padding: 7px;
+  border: 1px solid #cccc;
+}
+
+.waiting-for-reply {
+  font-style: italic;
+  font-weight: bold;
+  padding: 15px 20px;
+  margin-top: 100px;
+}
+
+.chat-boxes {
+  padding: 20px;
+  height: 500px;
+  overflow: auto;
+}
+
+.chat-box-message {
+  white-space: pre-wrap;
 }
