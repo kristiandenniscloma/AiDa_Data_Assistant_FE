@@ -5,7 +5,7 @@ import { fileURLToPath, URL } from 'node:url'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  base: process.env.NODE_ENV === 'production' ? '/architectui-vue-free/' : '/',
+  base: process.env.NODE_ENV === 'production' ? 'https://aida-data-assistant-fe.onrender.com/' : '/',
 
   resolve: {
     alias: {
